@@ -1,0 +1,14 @@
+flask
+flask_cors
+sqlalchemy
+sqlalchemy.orm
+logging
+requests
+certifi
+bcrypt
+
+# Development & CI tooling
+black>=24.4.2
+isort>=5.13.2
+ruff>=0.4.4
+pre-commit>=3.7.0
