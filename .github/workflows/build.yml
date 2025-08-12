@@ -1,0 +1,34 @@
+# .github/workflows/build_and_scan.yml
+
+name: Build and Scan Docker image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Docker image
+      uses: docker/build-push-action@v2
+      with:
+        push: false
+        load: true
+        tags: my-python-flask-app:latest
+
+    - name: Install Trivy
+      run: |
+        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -
+
+    - name: Scan Docker image with Trivy
+      run: |
+        ./bin/trivy image --severity HIGH,CRITICAL --exit-code 1 my-python-flask-app:latest
